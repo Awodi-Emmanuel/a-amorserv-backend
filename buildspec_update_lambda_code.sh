@@ -1,7 +1,7 @@
 #!/bin/bash
 
 echo "Lambda files got changed. Going to update lambda function code"
-aws ssm get-parameters-by-path --path /Test-LAMBDA --region us-west-2 | jq -r '.Parameters | map(.Name+"="+.Value)| join("\n") | sub("/Test-LAMBDA/"; ""; "g")  ' > .env
+aws ssm get-parameters-by-path --path /Test-LAMBDA --region us-east-2 | jq -r '.Parameters | map(.Name+"="+.Value)| join("\n") | sub("/Test-LAMBDA/"; ""; "g")  ' > .env
 
 mkdir -p /tmp/lambda/Test
 echo "Copying Files from Project to Temp Folder"
