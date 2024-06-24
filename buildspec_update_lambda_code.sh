@@ -23,6 +23,7 @@ cp .env /tmp/lambda/Test/.env
 
 # Zip files
 cd /tmp/lambda/Test/
+ls 
 zip -rq ../Test.zip .
 pwd
 
