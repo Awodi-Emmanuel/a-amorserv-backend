@@ -31,7 +31,7 @@ ls
 # Upload ZIP file to S3
 echo "Uploading ZIP file to S3"
 
-aws s3 sync /tmp/Test.zip s3://b-amorserv-s3-codepipeline/lambda_functions/my_lambda_function/Test.zip
+aws s3 cp .Test.zip s3://b-amorserv-s3-codepipeline/lambda_functions/my_lambda_function/Test.zip
 
 # Update Lambda function code
 echo "Updating Lambda function code"
