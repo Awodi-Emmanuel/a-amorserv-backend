@@ -1,13 +1,33 @@
 #!/bin/bash
 
-echo "Lambda files got changed. Going to update lambda function code"
-aws ssm get-parameters-by-path --path /Test-LAMBDA --region us-east-2 | jq -r '.Parameters | map(.Name+"="+.Value)| join("\n") | sub("/Test-LAMBDA/"; ""; "g")  ' > .env
+set -e  # Exit immediately if any command fails
 
+echo "Lambda files update process started..."
+
+# Fetch parameters from AWS SSM Parameter Store
+echo "Fetching parameters from AWS SSM Parameter Store"
+aws ssm get-parameters-by-path --path /Test-LAMBDA --region us-east-1 | \
+  jq -r '.Parameters | map(.Name+"="+.Value) | join("\n") | sub("/Test-LAMBDA/"; ""; "g")' > .env
+
+# Create temporary directory and copy files
 mkdir -p /tmp/lambda/Test
-echo "Copying Files from Project to Temp Folder"
+echo "Copying files to temporary folder"
 rsync -a lambda_code/ /tmp/lambda/Test/
 cp .env /tmp/lambda/Test/.env
 
-cd /tmp/lambda/Test/ && zip -rq ../Test.zip .
-aws s3 cp /tmp/lambda/Test.zip s3://b-amorserv-s3-codepipeline/lambda_functions/Test-Lambda/Test.zip
-aws lambda update-function-code --function-name TestLambda --s3-bucket b-amorserv-s3-codepipeline --s3-key lambda_functions/Test-Lambda/Test.zip
+# Zip files
+cd /tmp/lambda/Test/
+zip -rq ../Test.zip .
+
+# Upload ZIP file to S3
+echo "Uploading ZIP file to S3"
+aws s3 cp /tmp/Test.zip s3://b-amorserv-s3-codepipeline/lambda_functions/Test-Lambda/Test.zip
+
+# Update Lambda function code
+echo "Updating Lambda function code"
+aws lambda update-function-code --function-name TestLambda \
+  --s3-bucket b-amorserv-s3-codepipeline \
+  --s3-key lambda_functions/Test-Lambda/Test.zip \
+  --region us-east-1
+
+echo "Lambda function code updated successfully"
