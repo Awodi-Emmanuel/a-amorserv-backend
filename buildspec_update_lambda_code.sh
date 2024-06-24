@@ -4,6 +4,9 @@ set -e  # Exit immediately if any command fails
 
 echo "Lambda files update process started..."
 
+# Ensure lambda_code directory exists
+mkdir -p lambda_code
+
 # Fetch parameters from AWS SSM Parameter Store
 echo "Fetching parameters from AWS SSM Parameter Store"
 aws ssm get-parameters-by-path --path /Test-LAMBDA --region us-east-1 | \
@@ -21,13 +24,13 @@ zip -rq ../Test.zip .
 
 # Upload ZIP file to S3
 echo "Uploading ZIP file to S3"
-aws s3 cp /tmp/Test.zip s3://b-amorserv-s3-codepipeline/lambda_functions/Test-Lambda/Test.zip
+aws s3 cp /tmp/Test.zip s3://b-amorserv-s3-codepipeline/lambda_functions/my_lambda_function/Test.zip
 
 # Update Lambda function code
 echo "Updating Lambda function code"
-aws lambda update-function-code --function-name TestLambda \
+aws lambda update-function-code --function-name my_lambda_function \
   --s3-bucket b-amorserv-s3-codepipeline \
-  --s3-key lambda_functions/Test-Lambda/Test.zip \
+  --s3-key lambda_functions/my_lambda_function/Test.zip \
   --region us-east-1
 
 echo "Lambda function code updated successfully"
