@@ -23,10 +23,10 @@ cp .env /tmp/lambda/Test/.env
 
 # Zip files
 cd /tmp/lambda/Test/
-ls 
 zip -rq ../Test.zip .
-pwd
 
+
+ls
 # Upload ZIP file to S3
 echo "Uploading ZIP file to S3"
 pwd
