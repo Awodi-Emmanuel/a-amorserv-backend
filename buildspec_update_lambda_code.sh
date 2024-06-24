@@ -18,7 +18,7 @@ mkdir -p /tmp/lambda/Test
 echo "Copying files to temporary folder"
 # rsync -a lambda_code/ /tmp/lambda/Test/
 pwd
-cp .  /tmp/lambda/Test/
+cp -r .  /tmp/lambda/Test/
 cp .env /tmp/lambda/Test/.env
 
 # Zip files
