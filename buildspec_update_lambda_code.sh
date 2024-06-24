@@ -23,9 +23,9 @@ cp .env /tmp/lambda/Test/.env
 
 # Zip files
 cd /tmp/lambda/Test/
+pwd
+zip -r Test.zip .
 ls
-zip -rq ../Test.zip .
-
 
 
 # Upload ZIP file to S3
