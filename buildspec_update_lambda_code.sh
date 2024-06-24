@@ -13,11 +13,11 @@ aws ssm get-parameters-by-path --path /Test-LAMBDA --region us-east-1 | \
   jq -r '.Parameters | map(.Name+"="+.Value) | join("\n") | sub("/Test-LAMBDA/"; ""; "g")' > .env
 
 # Create temporary directory and copy files
-pwd
+
 mkdir -p /tmp/lambda/Test
 echo "Copying files to temporary folder"
 # rsync -a lambda_code/ /tmp/lambda/Test/
-pwd
+
 cp -r .  /tmp/lambda/Test/
 cp .env /tmp/lambda/Test/.env
 
@@ -29,9 +29,9 @@ zip -rq ../Test.zip .
 ls
 # Upload ZIP file to S3
 echo "Uploading ZIP file to S3"
-pwd
-aws s3 cp /tmp/Test.zip s3://b-amorserv-s3-codepipeline/lambda_functions/my_lambda_function/Test.zip
-pwd
+
+aws s3 sync /tmp/Test.zip s3://b-amorserv-s3-codepipeline/lambda_functions/my_lambda_function/Test.zip
+
 # Update Lambda function code
 echo "Updating Lambda function code"
 aws lambda update-function-code --function-name my_lambda_function \
