@@ -1,8 +1,7 @@
-version: 0.2
+version: 0.1
 env:
   variables:
     TestVar: "123"
-  git-credential-helper: yes
 phases:
   pre_build:
     commands:
